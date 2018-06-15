@@ -3,6 +3,7 @@ package dao;
 import java.sql.Statement;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,22 +30,26 @@ public class AmigoDAOImpl implements AmigoDAO{
 	}
 		
 	@Override
-	public List<Amigo> pesquisarAmigo() {
+	public List<Amigo> pesquisarAmigo(String login, String apelido) {
 		
 		Connection con = criaConexao();
 		List<Amigo> listaAmigos = new ArrayList<>();
 		try{
 			Statement stmt = con.createStatement();
-			String sql = "";
-			
-			stmt.executeQuery(sql);
+			String sql = "SELECT * FROM login WHERE lg_login = '" + login + "' ";
+			sql = sql + "OR lg_apelido = '" + apelido + "'";
+			ResultSet rs = stmt.executeQuery(sql);
+			while (rs.next()){
+				Amigo a = new Amigo();
+				a.setApelido(rs.getString("lg_apelido"));
+				a.setLogin(rs.getString("lg_login"));
+				listaAmigos.add(a);
+			}
 			
 		}catch(Exception e){
 			JOptionPane.showMessageDialog(null, "Erro! Verifique!");
 			e.printStackTrace();
-		}
-		
-		
+		}		
 		return listaAmigos;
 	}
 

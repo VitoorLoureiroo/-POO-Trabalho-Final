@@ -7,7 +7,7 @@ import model.Amigo;
 
 public interface AmigoDAO {
 
-		List<Amigo> pesquisarAmigo();
+		List<Amigo> pesquisarAmigo(String login, String apelido);
 		
 		
 }
